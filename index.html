@@ -1,0 +1,1740 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ROUTPHER Framework — Official Documentation</title>
+  <style>
+    :root {
+      --bg: #0f1724;
+      --card: #0b1220;
+      --muted: #98a0b3;
+      --accent: #64d5ff;
+      --panel: #071024;
+      --glass: rgba(255, 255, 255, 0.03);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(180deg, #071428 0%, #071a2a 100%);
+      color: #e6eef8;
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 32px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo svg {
+      width: 40px;
+      height: 40px;
+    }
+
+    .logo h1 {
+      font-size: 24px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 32px;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      height: fit-content;
+      max-height: calc(100vh - 80px);
+      overflow-y: auto;
+      background: var(--card);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 8px 32px rgba(2, 6, 23, 0.6);
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+      background: var(--panel);
+      border-radius: 4px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--glass);
+      border-radius: 4px;
+    }
+
+    .toc {
+      list-style: none;
+    }
+
+    .toc li {
+      margin-bottom: 8px;
+    }
+
+    .toc a {
+      display: block;
+      padding: 8px 12px;
+      border-radius: 6px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .toc a:hover {
+      background: var(--glass);
+      color: #fff;
+    }
+
+    .content {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 8px 32px rgba(2, 6, 23, 0.6);
+      min-height: 80vh;
+    }
+
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section:last-child {
+      margin-bottom: 0;
+    }
+
+    h2 {
+      font-size: 32px;
+      margin-bottom: 16px;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    h3 {
+      font-size: 24px;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    h4 {
+      font-size: 18px;
+      margin-top: 24px;
+      margin-bottom: 8px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: #cbd5e1;
+    }
+
+    ul, ol {
+      margin: 16px 0;
+      padding-left: 24px;
+      color: #cbd5e1;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    pre {
+      background: #021126;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 16px 0;
+      border: 1px solid rgba(100, 213, 255, 0.1);
+    }
+
+    code {
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #bfe9ff;
+    }
+
+    :not(pre) > code {
+      background: rgba(100, 213, 255, 0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: var(--accent);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: rgba(100, 213, 255, 0.12);
+      color: var(--accent);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    .badge.success {
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--success);
+    }
+
+    .badge.warning {
+      background: rgba(245, 158, 11, 0.12);
+      color: var(--warning);
+    }
+
+    .badge.danger {
+      background: rgba(239, 68, 68, 0.12);
+      color: var(--danger);
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.00));
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin: 16px 0;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .feature-card {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid rgba(100, 213, 255, 0.1);
+    }
+
+    .feature-card h4 {
+      margin-top: 0;
+      margin-bottom: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    th {
+      background: var(--panel);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .alert {
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin: 16px 0;
+      border-left: 4px solid;
+    }
+
+    .alert.info {
+      background: rgba(100, 213, 255, 0.1);
+      border-color: var(--accent);
+    }
+
+    .alert.warning {
+      background: rgba(245, 158, 11, 0.1);
+      border-color: var(--warning);
+    }
+
+    .alert.danger {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: var(--danger);
+    }
+
+    footer {
+      margin-top: 64px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        max-height: none;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      .content {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#072338"/>
+          <path d="M10 20h20M10 12h20M10 28h20" stroke="#64d5ff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <h1>ROUTPHER</h1>
+      </div>
+      <nav>
+        <a href="#introduction">Introduction</a>
+        <a href="#getting-started">Get Started</a>
+        <a href="#routing">Routing</a>
+        <a href="#auth">Auth</a>
+        <a href="#deployment">Deploy</a>
+      </nav>
+    </header>
+
+    <div class="grid">
+      <aside class="sidebar">
+        <ul class="toc">
+          <li><a href="#introduction">Introduction</a></li>
+          <li><a href="#installation">Installation</a></li>
+          <li><a href="#getting-started">Getting Started</a></li>
+          <li><a href="#project-structure">Project Structure</a></li>
+          <li><a href="#routing">File-Based Routing</a></li>
+          <li><a href="#dynamic-routes">Dynamic Routes</a></li>
+          <li><a href="#api-routes">API Routes (+server.php)</a></li>
+          <li><a href="#layouts">Layouts & Nesting</a></li>
+          <li><a href="#middleware">Middleware</a></li>
+          <li><a href="#authentication">Authentication (JWT)</a></li>
+          <li><a href="#csrf">CSRF Protection</a></li>
+          <li><a href="#database">Database & Migrations</a></li>
+          <li><a href="#query-builder">Query Builder</a></li>
+          <li><a href="#models">Models</a></li>
+          <li><a href="#validation">Validation</a></li>
+          <li><a href="#logging">Logging</a></li>
+          <li><a href="#cli">CLI Commands</a></li>
+          <li><a href="#security">Security Best Practices</a></li>
+          <li><a href="#deployment">Deployment</a></li>
+          <li><a href="#examples">Examples</a></li>
+        </ul>
+      </aside>
+
+      <main class="content">
+
+        <section id="introduction" class="section">
+          <h2>Introduction</h2>
+
+          <p><strong>ROUTPHER</strong> is a lightweight, file-based PHP framework inspired by modern JavaScript frameworks (Next.js, SvelteKit) and classic server-side simplicity. It provides an opinionated structure for building secure, modern web applications without the complexity of large frameworks.</p>
+
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h4>📁 File-Based Routing</h4>
+              <p>Organize your app with intuitive folder structure. No route definitions needed.</p>
+            </div>
+
+            <div class="feature-card">
+              <h4>🔐 JWT Authentication</h4>
+              <p>Built-in access & refresh tokens with secure cookie handling.</p>
+            </div>
+
+            <div class="feature-card">
+              <h4>🛡️ Security First</h4>
+              <p>CSRF protection, security headers, rate limiting out of the box.</p>
+            </div>
+
+            <div class="feature-card">
+              <h4>⚡ Modern Stack</h4>
+              <p>HTMX integration, PSR-4 autoloading, PHP 8.0+ features.</p>
+            </div>
+
+            <div class="feature-card">
+              <h4>🗄️ Database Ready</h4>
+              <p>SQLite by default, MySQL/PostgreSQL supported with migrations.</p>
+            </div>
+
+            <div class="feature-card">
+              <h4>🎨 Developer Experience</h4>
+              <p>CLI tools, logging, query builder, and minimal boilerplate.</p>
+            </div>
+          </div>
+
+          <h3>Design Philosophy</h3>
+
+          <ul>
+            <li><strong>Productivity:</strong> Start building immediately with sensible defaults</li>
+            <li><strong>Clarity:</strong> Explicit file names and predictable behavior</li>
+            <li><strong>Security:</strong> Best practices baked in, not bolted on</li>
+            <li><strong>Performance:</strong> Minimal overhead, filesystem routing</li>
+            <li><strong>Simplicity:</strong> Pure PHP, no magic, easy debugging</li>
+          </ul>
+        </section>
+
+        <section id="installation" class="section">
+          <h2>Installation</h2>
+
+          <h3>Requirements</h3>
+
+          <ul>
+            <li>PHP 8.0 or higher</li>
+            <li>PHP Extensions: PDO, pdo_sqlite, json, mbstring, openssl</li>
+            <li>Composer (for dependency management)</li>
+          </ul>
+
+          <h3>Create New Project</h3>
+
+          <pre><code>bash create-php-app.sh my-app</code></pre>
+
+          <h4>Generator Options</h4>
+
+          <pre><code># Minimal structure (no auth examples)
+bash create-php-app.sh my-app --minimal
+
+# Full authentication system (default)
+bash create-php-app.sh my-app --with-auth
+
+# API-focused structure
+bash create-php-app.sh my-app --with-api
+
+# Everything: auth + API + examples
+bash create-php-app.sh my-app --full-stack
+
+# Skip composer install
+bash create-php-app.sh my-app --no-composer</code></pre>
+
+          <h3>Manual Setup</h3>
+
+          <p>If you prefer manual setup:</p>
+
+          <pre><code># 1. Install dependencies
+composer install
+
+# 2. Run migrations
+php artisan migrate
+
+# 3. Seed database (optional)
+php artisan db:seed
+
+# 4. Start development server
+php artisan serve</code></pre>
+
+          <div class="alert info">
+            <strong>🔑 Security Keys:</strong> The generator automatically creates secure random keys for APP_KEY and JWT_SECRET. Always regenerate these before deploying to production.
+          </div>
+        </section>
+
+        <section id="getting-started" class="section">
+          <h2>Getting Started</h2>
+
+          <h3>First Steps</h3>
+
+          <pre><code># Navigate to your project
+cd my-app
+
+# Start development server
+php artisan serve
+
+# Visit http://127.0.0.1:8000</code></pre>
+
+          <p>If you enabled authentication, default credentials are:</p>
+
+          <ul>
+            <li>Admin: <code>admin@example.com</code> / <code>password</code></li>
+            <li>User: <code>user@example.com</code> / <code>password</code></li>
+          </ul>
+
+          <div class="alert warning">
+            <strong>⚠️ Important:</strong> Change these credentials immediately in production!
+          </div>
+        </section>
+
+        <section id="project-structure" class="section">
+          <h2>Project Structure</h2>
+
+          <pre><code>my-app/
+├── app/
+│   ├── core/              # Framework classes (App, Router, Auth, etc.)
+│   ├── middleware/        # Custom middleware
+│   ├── models/            # Database models
+│   ├── views/
+│   │   ├── layouts/       # Shared layouts
+│   │   └── errors/        # Error pages (404, 500)
+│   ├── page.php           # Homepage (/)
+│   ├── login/
+│   │   ├── page.php       # Login page (GET /login)
+│   │   └── +server.php    # Login API (POST /login)
+│   └── bootstrap.php      # App initialization
+├── config/                # Configuration files
+├── database/
+│   ├── migrations/        # Database migrations
+│   └── seeds/             # Database seeders
+├── public/
+│   ├── index.php          # Front controller
+│   └── .htaccess          # Apache rewrite rules
+├── storage/
+│   ├── db/                # SQLite database
+│   ├── logs/              # Application logs
+│   └── cache/             # Cache files
+├── vendor/                # Composer dependencies
+├── .env                   # Environment configuration
+├── .env.example           # Example env file
+├── .gitignore
+├── artisan                # CLI tool
+└── composer.json</code></pre>
+        </section>
+
+        <section id="routing" class="section">
+          <h2>File-Based Routing</h2>
+
+          <p>ROUTPHER uses the filesystem for routing. Create folders and <code>page.php</code> files to define routes.</p>
+
+          <h3>Basic Routes</h3>
+
+          <table>
+            <thead>
+              <tr>
+                <th>File Path</th>
+                <th>URL</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>app/page.php</code></td>
+                <td><code>/</code></td>
+              </tr>
+              <tr>
+                <td><code>app/about/page.php</code></td>
+                <td><code>/about</code></td>
+              </tr>
+              <tr>
+                <td><code>app/blog/page.php</code></td>
+                <td><code>/blog</code></td>
+              </tr>
+              <tr>
+                <td><code>app/contact/page.php</code></td>
+                <td><code>/contact</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Example: Creating a Page</h4>
+
+          <pre><code>&lt;?php
+// app/about/page.php
+
+$title = 'About Us';
+?&gt;
+
+&lt;h1&gt;About Us&lt;/h1&gt;
+&lt;p&gt;Welcome to our company!&lt;/p&gt;</code></pre>
+
+          <p>Pages are automatically wrapped with layouts (see <a href="#layouts">Layouts</a>).</p>
+        </section>
+
+        <section id="dynamic-routes" class="section">
+          <h2>Dynamic Routes</h2>
+
+          <p>Use <code>[param]</code> folders to create dynamic route segments.</p>
+
+          <h3>Dynamic Parameters</h3>
+
+          <table>
+            <thead>
+              <tr>
+                <th>File Path</th>
+                <th>Matches URL</th>
+                <th>Parameters</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>app/users/[id]/page.php</code></td>
+                <td><code>/users/123</code></td>
+                <td><code>$params['id'] = '123'</code></td>
+              </tr>
+              <tr>
+                <td><code>app/blog/[slug]/page.php</code></td>
+                <td><code>/blog/hello-world</code></td>
+                <td><code>$params['slug'] = 'hello-world'</code></td>
+              </tr>
+              <tr>
+                <td><code>app/users/[id]/posts/[pid]/page.php</code></td>
+                <td><code>/users/5/posts/42</code></td>
+                <td><code>$params = ['id' => '5', 'pid' => '42']</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Example: User Profile Page</h4>
+
+          <pre><code>&lt;?php
+// app/users/[id]/page.php
+
+use App\Models\User;
+
+$userId = $params['id']; // Provided by router
+$user = User::find($userId);
+
+if (!$user) {
+    abort(404);
+}
+
+$title = e($user['name']);
+?&gt;
+
+&lt;h1&gt;&lt;?= e($user['name']) ?&gt;&lt;/h1&gt;
+&lt;p&gt;Email: &lt;?= e($user['email']) ?&gt;&lt;/p&gt;
+&lt;p&gt;Role: &lt;?= e($user['role']) ?&gt;&lt;/p&gt;</code></pre>
+        </section>
+
+        <section id="api-routes" class="section">
+          <h2>API Routes (+server.php)</h2>
+
+          <p>API endpoints are defined using <code>+server.php</code> files alongside your pages. These handle HTTP methods (GET, POST, PUT, DELETE) and return JSON responses.</p>
+
+          <h3>Creating an API Endpoint</h3>
+
+          <pre><code>&lt;?php
+// app/api/users/+server.php
+
+use App\Core\Response;
+use App\Models\User;
+
+return [
+    'get' => function($req) {
+        $users = User::all();
+        Response::json($users);
+    },
+
+    'post' => function($req) {
+        $data = $req->input('name');
+
+        // Validate
+        if (empty($data)) {
+            Response::json(['error' => 'Name required'], 400);
+        }
+
+        $userId = User::create($req->json());
+        Response::json(['id' => $userId], 201);
+    }
+];</code></pre>
+
+          <h4>Accessing API Endpoints</h4>
+
+          <pre><code># GET request
+curl http://localhost:8000/api/users
+
+# POST request
+curl -X POST http://localhost:8000/api/users \
+  -H "Content-Type: application/json" \
+  -d '{"name": "John Doe", "email": "john@example.com"}'</code></pre>
+
+          <h3>Dynamic API Routes</h3>
+
+          <pre><code>&lt;?php
+// app/api/users/[id]/+server.php
+
+use App\Core\Response;
+use App\Models\User;
+
+return [
+    'get' => function($req) {
+        $userId = $req->meta['params']['id'];
+        $user = User::find($userId);
+
+        if (!$user) {
+            Response::json(['error' => 'Not found'], 404);
+        }
+
+        Response::json($user);
+    },
+
+    'delete' => function($req) {
+        $userId = $req->meta['params']['id'];
+        User::delete($userId);
+        Response::json(['success' => true]);
+    }
+];</code></pre>
+        </section>
+
+        <section id="layouts" class="section">
+          <h2>Layouts & Nesting</h2>
+
+          <p>Layouts wrap your pages with common HTML structure. ROUTPHER supports nested layouts for maximum flexibility.</p>
+
+          <h3>Creating a Layout</h3>
+
+          <pre><code>&lt;!-- app/views/layouts/main.php --&gt;
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;&lt;?= $title ?? 'My App' ?&gt;&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;nav&gt;
+            &lt;a href="/"&gt;Home&lt;/a&gt;
+            &lt;a href="/about"&gt;About&lt;/a&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+
+    &lt;main&gt;
+        &lt;?= $content ?&gt;  &lt;!-- Page content injected here --&gt;
+    &lt;/main&gt;
+
+    &lt;footer&gt;
+        &copy; 2025 My App
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+          <h3>Nested Layouts</h3>
+
+          <p>Each folder can have its own <code>layout.php</code> file. Layouts are nested from root to leaf.</p>
+
+          <pre><code>&lt;?php
+// app/dashboard/layout.php
+?&gt;
+&lt;div class="dashboard"&gt;
+    &lt;aside class="sidebar"&gt;
+        &lt;!-- Dashboard sidebar --&gt;
+    &lt;/aside&gt;
+
+    &lt;div class="dashboard-content"&gt;
+        &lt;?= $content ?&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+          <p>For <code>/dashboard/analytics</code>, layouts are applied in this order:</p>
+
+          <ol>
+            <li><code>app/views/layouts/main.php</code> (outermost)</li>
+            <li><code>app/dashboard/layout.php</code></li>
+            <li><code>app/dashboard/analytics/page.php</code> (innermost)</li>
+          </ol>
+
+          <h3>Special Files</h3>
+
+          <table>
+            <thead>
+              <tr>
+                <th>File</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>layout.php</code></td>
+                <td>Wraps all child pages</td>
+              </tr>
+              <tr>
+                <td><code>loading.php</code></td>
+                <td>Shows while page loads (useful for streaming)</td>
+              </tr>
+              <tr>
+                <td><code>error.php</code></td>
+                <td>Custom error handling for this route subtree</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="middleware" class="section">
+          <h2>Middleware</h2>
+
+          <p>Middleware functions intercept requests and can modify them or terminate early (e.g., for authentication, logging, rate limiting).</p>
+
+          <h3>Built-in Middleware</h3>
+
+          <ul>
+            <li><strong>SecurityHeaders:</strong> Sets security headers (CSP, X-Frame-Options, etc.)</li>
+            <li><strong>CSRF:</strong> Validates CSRF tokens on POST/PUT/DELETE/PATCH</li>
+            <li><strong>Auth::loadUser:</strong> Loads authenticated user from JWT token</li>
+            <li><strong>RateLimit:</strong> Limits request rate by IP</li>
+          </ul>
+
+          <h3>Registering Middleware</h3>
+
+          <pre><code>&lt;?php
+// public/index.php
+
+$app = new App(__DIR__ . '/..');
+
+// Global middleware (runs on all requests)
+$app->use([\App\Middleware\SecurityHeaders::class, 'handle']);
+$app->use([\App\Core\CSRF::class, 'verify']);
+$app->use([\App\Core\Auth::class, 'loadUser']);
+
+$app->run();</code></pre>
+
+          <h3>Creating Custom Middleware</h3>
+
+          <pre><code>&lt;?php
+// app/middleware/AdminOnly.php
+
+namespace App\Middleware;
+
+use App\Core\Request;
+
+class AdminOnly
+{
+    public static function handle(Request $req, callable $next): mixed
+    {
+        $user = $GLOBALS['auth_user'] ?? null;
+
+        if (!$user || $user['role'] !== 'admin') {
+            if ($req->isJson()) {
+                \App\Core\Response::json(['error' => 'Forbidden'], 403);
+            } else {
+                abort(403, 'Admin access required');
+            }
+        }
+
+        return $next($req);
+    }
+}</code></pre>
+
+          <h3>Route-Specific Middleware</h3>
+
+          <p>Apply middleware to specific API routes:</p>
+
+          <pre><code>&lt;?php
+// app/admin/users/+server.php
+
+use App\Middleware\AdminOnly;
+use App\Core\Response;
+
+return [
+    'get' => function($req) {
+        // Check admin access first
+        AdminOnly::handle($req, function($req) {
+            $users = \App\Models\User::all();
+            Response::json($users);
+        });
+    }
+];</code></pre>
+        </section>
+
+        <section id="authentication" class="section">
+          <h2>Authentication (JWT)</h2>
+
+          <p>ROUTPHER includes a complete JWT authentication system with access and refresh tokens.</p>
+
+          <h3>How It Works</h3>
+
+          <ol>
+            <li><strong>Login:</strong> User submits credentials, receives access + refresh tokens</li>
+            <li><strong>Access Token:</strong> Short-lived (15 min), sent with each request</li>
+            <li><strong>Refresh Token:</strong> Long-lived (7 days), stored in HttpOnly cookie</li>
+            <li><strong>Token Refresh:</strong> When access expires, use refresh token to get new access token</li>
+          </ol>
+
+          <h3>Issuing Tokens</h3>
+
+          <pre><code>&lt;?php
+use App\Core\Auth;
+
+// After successful login
+$tokens = Auth::issueTokens($userId);
+
+// Returns:
+// [
+//   'access' => 'eyJ0eXAiOi...',
+//   'refresh' => 'eyJ0eXAiOi...',
+//   'expires' => 1735689600
+// ]
+
+// Set cookies
+setcookie('refresh', $tokens['refresh'], [
+    'expires' => time() + (int)env('JWT_REFRESH_EXP', 604800),
+    'path' => '/',
+    'httponly' => true,
+    'secure' => env('SECURE_COOKIES', false),
+    'samesite' => 'Lax'
+]);
+
+setcookie('access', $tokens['access'], [
+    'expires' => $tokens['expires'],
+    'path' => '/',
+    'httponly' => false, // Accessible to JavaScript for API calls
+    'samesite' => 'Lax'
+]);</code></pre>
+
+          <h3>Validating Tokens</h3>
+
+          <pre><code>&lt;?php
+use App\Core\Auth;
+
+$token = $_COOKIE['access'] ?? null;
+$decoded = Auth::validate($token);
+
+if ($decoded) {
+    $userId = $decoded->sub;
+    // Token is valid
+} else {
+    // Token invalid or expired
+}</code></pre>
+
+          <h3>Accessing Authenticated User</h3>
+
+          <pre><code>&lt;?php
+// After Auth::loadUser middleware runs
+
+$user = $GLOBALS['auth_user']; // Loaded user object or null
+
+// Or use helper
+$user = auth();
+
+if ($user) {
+    echo "Logged in as: " . e($user['email']);
+}</code></pre>
+
+          <h3>Protecting Routes</h3>
+
+          <pre><code>&lt;?php
+// app/dashboard/page.php
+
+if (!auth()) {
+    redirect('/login');
+}
+
+// Or use in +server.php
+use App\Core\Auth;
+
+return [
+    'get' => function($req) {
+        // Require authentication
+        Auth::requireAuth($req, function($req) {
+            // Protected code here
+        });
+    }
+];</code></pre>
+
+          <h3>Token Refresh Endpoint</h3>
+
+          <p>The <code>--with-api</code> generator creates a refresh endpoint:</p>
+
+          <pre><code>POST /api/auth/refresh
+
+Response:
+{
+  "access": "new-access-token",
+  "expires": 1735689600
+}</code></pre>
+
+          <div class="alert warning">
+            <strong>Security Note:</strong> Always use HTTPS in production and set <code>SECURE_COOKIES=true</code> in <code>.env</code>.
+          </div>
+        </section>
+
+        <section id="csrf" class="section">
+          <h2>CSRF Protection</h2>
+
+          <p>Cross-Site Request Forgery (CSRF) protection is enabled by default for all state-changing requests (POST, PUT, DELETE, PATCH).</p>
+
+          <h3>How It Works</h3>
+
+          <ol>
+            <li>A unique token is generated and stored in the user's session</li>
+            <li>Forms include this token as a hidden field</li>
+            <li>On submit, the middleware validates the token</li>
+            <li>Invalid tokens result in a 403 Forbidden response</li>
+          </ol>
+
+          <h3>Adding CSRF Token to Forms</h3>
+
+          <pre><code>&lt;form method="POST" action="/users/create"&gt;
+    &lt;input type="text" name="name" required&gt;
+    &lt;input type="email" name="email" required&gt;
+
+    &lt;!-- CSRF Token --&gt;
+    &lt;input type="hidden" name="_csrf" value="&lt;?= \App\Core\CSRF::token() ?&gt;"&gt;
+
+    &lt;button type="submit"&gt;Create User&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+
+          <h3>CSRF with HTMX</h3>
+
+          <pre><code>&lt;!-- Set CSRF token globally for HTMX --&gt;
+&lt;script&gt;
+document.body.addEventListener('htmx:configRequest', (event) => {
+    event.detail.headers['X-CSRF-Token'] = '&lt;?= \App\Core\CSRF::token() ?&gt;';
+});
+&lt;/script&gt;
+
+&lt;!-- Now all HTMX requests include the token --&gt;
+&lt;button hx-post="/users/delete/5" hx-confirm="Delete?"&gt;Delete&lt;/button&gt;</code></pre>
+
+          <h3>Disabling CSRF for Specific Routes</h3>
+
+          <p>JSON API requests automatically skip CSRF validation (they should use CORS and SameSite cookies instead).</p>
+
+          <p>To disable CSRF globally, set in <code>.env</code>:</p>
+
+          <pre><code>CSRF_ENABLED=false</code></pre>
+        </section>
+
+        <section id="database" class="section">
+          <h2>Database & Migrations</h2>
+
+          <p>ROUTPHER uses SQLite by default but supports MySQL and PostgreSQL. Database schema is managed through migrations.</p>
+
+          <h3>Database Configuration</h3>
+
+          <pre><code># .env - SQLite (default)
+DB_CONNECTION=sqlite
+DB_PATH=storage/db/app.db
+
+# MySQL
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=my_app
+DB_USERNAME=root
+DB_PASSWORD=secret
+
+# PostgreSQL
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=my_app
+DB_USERNAME=postgres
+DB_PASSWORD=secret</code></pre>
+
+          <h3>Creating Migrations</h3>
+
+          <pre><code>&lt;?php
+// database/migrations/003_create_posts_table.php
+
+use App\Core\DB;
+
+$pdo = DB::pdo();
+
+$pdo->exec("
+    CREATE TABLE IF NOT EXISTS posts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        title TEXT NOT NULL,
+        content TEXT,
+        published_at INTEGER,
+        created_at INTEGER NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    )
+");
+
+echo "✓ Created posts table\n";</code></pre>
+
+          <h3>Running Migrations</h3>
+
+          <pre><code>php artisan migrate</code></pre>
+
+          <p>Migrations are tracked in the <code>migrations</code> table, so they only run once.</p>
+
+          <h3>Database Seeders</h3>
+
+          <pre><code>&lt;?php
+// database/seeds/PostSeeder.php
+
+use App\Core\DB;
+
+$pdo = DB::pdo();
+
+$posts = [
+    ['title' => 'First Post', 'content' => 'Hello world!'],
+    ['title' => 'Second Post', 'content' => 'Another post'],
+];
+
+foreach ($posts as $post) {
+    $stmt = $pdo->prepare(
+        'INSERT INTO posts (user_id, title, content, created_at) VALUES (?, ?, ?, ?)'
+    );
+    $stmt->execute([1, $post['title'], $post['content'], time()]);
+}
+
+echo "✓ Seeded posts\n";</code></pre>
+
+          <h3>Running Seeders</h3>
+
+          <pre><code>php artisan db:seed</code></pre>
+        </section>
+
+        <section id="query-builder" class="section">
+          <h2>Query Builder</h2>
+
+          <p>ROUTPHER includes a simple fluent query builder for common database operations.</p>
+
+          <h3>Basic Queries</h3>
+
+          <pre><code>&lt;?php
+use App\Core\DB;
+
+// Get all records
+$users = DB::table('users')->get();
+
+// Get first record
+$user = DB::table('users')->where('email', 'john@example.com')->first();
+
+// Limit and offset
+$users = DB::table('users')
+    ->limit(10)
+    ->offset(20)
+    ->get();
+
+// Multiple where clauses
+$users = DB::table('users')
+    ->where('role', 'admin')
+    ->where('active', 1)
+    ->get();</code></pre>
+
+          <h3>Inserting Records</h3>
+
+          <pre><code>&lt;?php
+$userId = DB::table('users')->insert([
+    'email' => 'john@example.com',
+    'password' => password_hash('secret', PASSWORD_DEFAULT),
+    'name' => 'John Doe',
+    'role' => 'user',
+    'created_at' => time()
+]);
+
+echo "Created user with ID: $userId";</code></pre>
+
+          <h3>Raw PDO Access</h3>
+
+          <p>For complex queries, use raw PDO:</p>
+
+          <pre><code>&lt;?php
+$pdo = DB::pdo();
+
+$stmt = $pdo->prepare('
+    SELECT users.*, COUNT(posts.id) as post_count
+    FROM users
+    LEFT JOIN posts ON posts.user_id = users.id
+    WHERE users.role = ?
+    GROUP BY users.id
+');
+
+$stmt->execute(['admin']);
+$admins = $stmt->fetchAll();</code></pre>
+        </section>
+
+        <section id="models" class="section">
+          <h2>Models</h2>
+
+          <p>Models provide a clean interface for interacting with database tables.</p>
+
+          <h3>Example: User Model</h3>
+
+          <pre><code>&lt;?php
+// app/models/User.php
+
+namespace App\Models;
+
+use App\Core\DB;
+
+class User
+{
+    public static function find(int|string $id): ?array
+    {
+        $stmt = DB::pdo()->prepare(
+            'SELECT id, email, name, role FROM users WHERE id = ?'
+        );
+        $stmt->execute([$id]);
+        return $stmt->fetch() ?: null;
+    }
+
+    public static function all(): array
+    {
+        return DB::pdo()
+            ->query('SELECT id, email, name, role FROM users')
+            ->fetchAll();
+    }
+
+    public static function create(array $data): int
+    {
+        $stmt = DB::pdo()->prepare(
+            'INSERT INTO users (email, password, name, role, created_at)
+             VALUES (?, ?, ?, ?, ?)'
+        );
+
+        $stmt->execute([
+            $data['email'],
+            password_hash($data['password'], PASSWORD_DEFAULT),
+            $data['name'],
+            $data['role'] ?? 'user',
+            time()
+        ]);
+
+        return (int)DB::pdo()->lastInsertId();
+    }
+
+    public static function update(int $id, array $data): bool
+    {
+        $stmt = DB::pdo()->prepare(
+            'UPDATE users SET email = ?, name = ? WHERE id = ?'
+        );
+        return $stmt->execute([$data['email'], $data['name'], $id]);
+    }
+
+    public static function delete(int $id): bool
+    {
+        return DB::pdo()
+            ->prepare('DELETE FROM users WHERE id = ?')
+            ->execute([$id]);
+    }
+}</code></pre>
+
+          <h3>Using Models</h3>
+
+          <pre><code>&lt;?php
+use App\Models\User;
+
+// Find by ID
+$user = User::find(1);
+
+// Get all users
+$users = User::all();
+
+// Create user
+$userId = User::create([
+    'email' => 'jane@example.com',
+    'password' => 'secret123',
+    'name' => 'Jane Doe'
+]);
+
+// Update user
+User::update($userId, [
+    'email' => 'jane.doe@example.com',
+    'name' => 'Jane Smith'
+]);
+
+// Delete user
+User::delete($userId);</code></pre>
+        </section>
+
+        <section id="validation" class="section">
+          <h2>Validation</h2>
+
+          <p>Simple built-in validation for form inputs.</p>
+
+          <h3>Request Validation</h3>
+
+          <pre><code>&lt;?php
+use App\Core\Request;
+
+$req = new Request();
+
+try {
+    $validated = $req->validate([
+        'email' => 'required|email',
+        'password' => 'required|min:8',
+        'name' => 'required|max:100'
+    ]);
+
+    // $validated contains only validated fields
+    User::create($validated);
+
+} catch (\Exception $e) {
+    // Validation failed
+    $_SESSION['error'] = $e->getMessage();
+    redirect('/register');
+}</code></pre>
+
+          <h3>Available Rules</h3>
+
+          <ul>
+            <li><code>required</code> - Field must not be empty</li>
+            <li><code>email</code> - Must be valid email format</li>
+            <li><code>min:X</code> - Minimum length</li>
+            <li><code>max:X</code> - Maximum length</li>
+          </ul>
+
+          <p>Combine multiple rules with <code>|</code> (pipe) separator.</p>
+        </section>
+
+        <section id="logging" class="section">
+          <h2>Logging</h2>
+
+          <p>ROUTPHER includes a PSR-3 inspired logger for debugging and monitoring.</p>
+
+          <h3>Log Levels</h3>
+
+          <ul>
+            <li><strong>debug:</strong> Detailed debug information</li>
+            <li><strong>info:</strong> Interesting events (user login, etc.)</li>
+            <li><strong>warning:</strong> Warnings (failed login attempts)</li>
+            <li><strong>error:</strong> Runtime errors</li>
+          </ul>
+
+          <h3>Using the Logger</h3>
+
+          <pre><code>&lt;?php
+logger()->debug('Debugging information', ['var' => $value]);
+logger()->info('User logged in', ['user_id' => 123]);
+logger()->warning('Failed login attempt', ['email' => $email]);
+logger()->error('Database connection failed', ['error' => $e->getMessage()]);</code></pre>
+
+          <h3>Log Configuration</h3>
+
+          <pre><code># .env
+LOG_LEVEL=debug      # debug, info, warning, error
+LOG_FILE=storage/logs/app.log</code></pre>
+
+          <h3>Log Output</h3>
+
+          <pre><code>[2025-01-25 10:30:45] INFO: User logged in {"user_id":123}
+[2025-01-25 10:31:12] WARNING: Failed login attempt {"email":"test@example.com"}
+[2025-01-25 10:32:05] ERROR: Database connection failed {"error":"Connection refused"}</code></pre>
+        </section>
+
+        <section id="cli" class="section">
+          <h2>CLI Commands</h2>
+
+          <p>The <code>artisan</code> CLI tool provides helpful commands for development.</p>
+
+          <h3>Available Commands</h3>
+
+          <pre><code>php artisan migrate              # Run database migrations
+php artisan db:seed              # Run database seeders
+php artisan serve [host] [port]  # Start dev server (default: 127.0.0.1:8000)
+php artisan key:generate         # Generate new APP_KEY
+php artisan routes:list          # List all routes (coming soon)
+php artisan help                 # Show help</code></pre>
+
+          <h3>Starting Development Server</h3>
+
+          <pre><code># Default (127.0.0.1:8000)
+php artisan serve
+
+# Custom host and port
+php artisan serve 0.0.0.0 3000</code></pre>
+
+          <h3>Generating Secure Keys</h3>
+
+          <pre><code>php artisan key:generate</code></pre>
+
+          <p>This updates your <code>.env</code> file with a new random APP_KEY.</p>
+        </section>
+
+        <section id="security" class="section">
+          <h2>Security Best Practices</h2>
+
+          <div class="alert danger">
+            <strong>🔒 Critical Security Checklist:</strong> Review these before deploying to production!
+          </div>
+
+          <h3>Environment Configuration</h3>
+
+          <ul>
+            <li>✅ Change <code>APP_KEY</code> and <code>JWT_SECRET</code> to random values</li>
+            <li>✅ Set <code>APP_ENV=production</code></li>
+            <li>✅ Set <code>APP_DEBUG=false</code></li>
+            <li>✅ Set <code>SECURE_COOKIES=true</code> (requires HTTPS)</li>
+            <li>✅ Never commit <code>.env</code> to version control</li>
+          </ul>
+
+          <h3>HTTPS & Cookies</h3>
+
+          <pre><code># .env (production)
+APP_ENV=production
+APP_DEBUG=false
+SECURE_COOKIES=true  # Requires HTTPS
+CSRF_ENABLED=true</code></pre>
+
+          <p>Uncomment HTTPS redirect in <code>public/.htaccess</code>:</p>
+
+          <pre><code># Redirect to HTTPS (production)
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]</code></pre>
+
+          <h3>Database Security</h3>
+
+          <ul>
+            <li>✅ Always use prepared statements (prevent SQL injection)</li>
+            <li>✅ Hash passwords with <code>password_hash()</code></li>
+            <li>✅ Never store passwords in plain text</li>
+            <li>✅ Limit database user permissions</li>
+          </ul>
+
+          <h3>Input Validation</h3>
+
+          <ul>
+            <li>✅ Validate all user input server-side</li>
+            <li>✅ Use <code>e()</code> helper to escape HTML output</li>
+            <li>✅ Sanitize file uploads</li>
+            <li>✅ Set upload size limits</li>
+          </ul>
+
+          <h3>Authentication</h3>
+
+          <ul>
+            <li>✅ Enforce minimum password length (8+ characters)</li>
+            <li>✅ Use HttpOnly cookies for refresh tokens</li>
+            <li>✅ Implement rate limiting on login endpoints</li>
+            <li>✅ Log failed authentication attempts</li>
+            <li>✅ Use generic error messages (don't reveal if email exists)</li>
+          </ul>
+
+          <h3>Security Headers</h3>
+
+          <p>The <code>SecurityHeaders</code> middleware sets important headers. Customize in <code>app/middleware/SecurityHeaders.php</code>:</p>
+
+          <pre><code>X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Security-Policy: default-src 'self'; ...</code></pre>
+
+          <h3>File Permissions</h3>
+
+          <pre><code># Set correct permissions
+chmod 755 public/
+chmod 755 storage/
+chmod 664 storage/db/app.db
+chmod 644 .env
+
+# Ensure .env is not web-accessible
+# (already protected by .htaccess)</code></pre>
+
+          <h3>Regular Updates</h3>
+
+          <ul>
+            <li>✅ Keep PHP updated</li>
+            <li>✅ Run <code>composer update</code> regularly</li>
+            <li>✅ Monitor security advisories</li>
+          </ul>
+        </section>
+
+        <section id="deployment" class="section">
+          <h2>Deployment</h2>
+
+          <h3>Pre-Deployment Checklist</h3>
+
+          <ol>
+            <li>✅ Review <a href="#security">Security Best Practices</a></li>
+            <li>✅ Set production environment variables</li>
+            <li>✅ Test all routes and functionality</li>
+            <li>✅ Run migrations on production database</li>
+            <li>✅ Configure web server (Apache/Nginx)</li>
+          </ol>
+
+          <h3>Apache Deployment</h3>
+
+          <p>The <code>public/.htaccess</code> file is already configured. Set your document root:</p>
+
+          <pre><code>&lt;VirtualHost *:80&gt;
+    ServerName example.com
+    DocumentRoot /var/www/my-app/public
+
+    &lt;Directory /var/www/my-app/public&gt;
+        AllowOverride All
+        Require all granted
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</code></pre>
+
+          <h3>Nginx Deployment</h3>
+
+          <pre><code>server {
+    listen 80;
+    server_name example.com;
+    root /var/www/my-app/public;
+    index index.php;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    # Deny access to sensitive files
+    location ~ /\.env {
+        deny all;
+    }
+}</code></pre>
+
+          <h3>Deployment Steps</h3>
+
+          <pre><code># 1. Clone repository
+git clone https://github.com/yourusername/my-app.git
+cd my-app
+
+# 2. Install dependencies
+composer install --no-dev --optimize-autoloader
+
+# 3. Set up environment
+cp .env.example .env
+php artisan key:generate
+nano .env  # Edit production values
+
+# 4. Set permissions
+chmod 755 storage/
+chmod 664 storage/db/app.db
+chmod 644 .env
+
+# 5. Run migrations
+php artisan migrate
+
+# 6. Optional: Seed production data
+php artisan db:seed</code></pre>
+
+          <h3>Environment Variables (Production)</h3>
+
+          <pre><code>APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://example.com
+APP_KEY=your-generated-key
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_DATABASE=production_db
+DB_USERNAME=db_user
+DB_PASSWORD=secure-password
+
+JWT_SECRET=your-generated-secret
+JWT_ACCESS_EXP=900
+JWT_REFRESH_EXP=604800
+
+CSRF_ENABLED=true
+SECURE_COOKIES=true
+
+LOG_LEVEL=warning</code></pre>
+
+          <h3>HTTPS Setup</h3>
+
+          <p>Use Let's Encrypt for free SSL certificates:</p>
+
+          <pre><code># Install certbot
+sudo apt install certbot python3-certbot-apache
+
+# Get certificate
+sudo certbot --apache -d example.com -d www.example.com
+
+# Auto-renewal is configured automatically</code></pre>
+        </section>
+
+        <section id="examples" class="section">
+          <h2>Examples & Recipes</h2>
+
+          <h3>Example 1: HTMX Inline Form</h3>
+
+          <pre><code>&lt;!-- Create user without page reload --&gt;
+&lt;form hx-post="/api/users"
+      hx-target="#user-list"
+      hx-swap="afterbegin"&gt;
+
+    &lt;input name="name" placeholder="Name" required&gt;
+    &lt;input name="email" placeholder="Email" required&gt;
+    &lt;input type="hidden" name="_csrf" value="&lt;?= \App\Core\CSRF::token() ?&gt;"&gt;
+
+    &lt;button type="submit"&gt;Add User&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;div id="user-list"&gt;
+    &lt;!-- New users appear here --&gt;
+&lt;/div&gt;</code></pre>
+
+          <h3>Example 2: Protected Admin Route</h3>
+
+          <pre><code>&lt;?php
+// app/admin/dashboard/page.php
+
+$user = auth();
+
+if (!$user || $user['role'] !== 'admin') {
+    abort(403, 'Admin access required');
+}
+
+$title = 'Admin Dashboard';
+?&gt;
+
+&lt;h1&gt;Admin Dashboard&lt;/h1&gt;
+&lt;p&gt;Welcome, &lt;?= e($user['name']) ?&gt;&lt;/p&gt;</code></pre>
+
+          <h3>Example 3: API with Rate Limiting</h3>
+
+          <pre><code>&lt;?php
+// app/api/auth/login/+server.php
+
+use App\Core\Auth;
+use App\Core\Response;
+use App\Middleware\RateLimit;
+use App\Models\User;
+
+return [
+    'post' => function($req) {
+        // Rate limit: 5 attempts per minute
+        RateLimit::limit(5, 1)($req, function($req) {
+            $email = $req->input('email');
+            $password = $req->input('password');
+
+            $user = User::findByEmail($email);
+
+            if (!$user || !password_verify($password, $user['password'])) {
+                Response::json(['error' => 'Invalid credentials'], 401);
+            }
+
+            $tokens = Auth::issueTokens($user['id']);
+            Response::json($tokens);
+        });
+    }
+];</code></pre>
+
+          <h3>Example 4: File Upload Handling</h3>
+
+          <pre><code>&lt;?php
+// app/upload/+server.php
+
+use App\Core\Response;
+
+return [
+    'post' => function($req) {
+        if (!isset($req->files['avatar'])) {
+            Response::json(['error' => 'No file uploaded'], 400);
+        }
+
+        $file = $req->files['avatar'];
+
+        // Validate
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            Response::json(['error' => 'Upload failed'], 500);
+        }
+
+        if ($file['size'] > 2 * 1024 * 1024) { // 2MB
+            Response::json(['error' => 'File too large'], 400);
+        }
+
+        $allowed = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!in_array($file['type'], $allowed)) {
+            Response::json(['error' => 'Invalid file type'], 400);
+        }
+
+        // Save file
+        $filename = uniqid() . '_' . basename($file['name']);
+        $destination = __DIR__ . '/../../storage/uploads/' . $filename;
+
+        if (!move_uploaded_file($file['tmp_name'], $destination)) {
+            Response::json(['error' => 'Failed to save file'], 500);
+        }
+
+        Response::json(['filename' => $filename]);
+    }
+];</code></pre>
+
+          <h3>Example 5: Pagination</h3>
+
+          <pre><code>&lt;?php
+use App\Core\DB;
+
+$page = (int)($_GET['page'] ?? 1);
+$perPage = 20;
+$offset = ($page - 1) * $perPage;
+
+$users = DB::table('users')
+    ->limit($perPage)
+    ->offset($offset)
+    ->get();
+
+$total = DB::pdo()->query('SELECT COUNT(*) FROM users')->fetchColumn();
+$totalPages = ceil($total / $perPage);
+?&gt;
+
+&lt;h1&gt;Users (Page &lt;?= $page ?&gt; of &lt;?= $totalPages ?&gt;)&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;?php foreach ($users as $user): ?&gt;
+    &lt;li&gt;&lt;?= e($user['name']) ?&gt;&lt;/li&gt;
+&lt;?php endforeach; ?&gt;
+&lt;/ul&gt;
+
+&lt;!-- Pagination links --&gt;
+&lt;?php if ($page > 1): ?&gt;
+    &lt;a href="?page=&lt;?= $page - 1 ?&gt;"&gt;Previous&lt;/a&gt;
+&lt;?php endif; ?&gt;
+
+&lt;?php if ($page < $totalPages): ?&gt;
+    &lt;a href="?page=&lt;?= $page + 1 ?&gt;"&gt;Next&lt;/a&gt;
+&lt;?php endif; ?&gt;</code></pre>
+        </section>
+
+        <footer>
+          <p><strong>ROUTPHER Framework</strong> — Version 2.0.0</p>
+          <p>Lightweight, secure, and developer-friendly PHP framework</p>
+          <p>Created with ❤️ for modern PHP development</p>
+        </footer>
+
+      </main>
+    </div>
+  </div>
+</body>
+</html>
