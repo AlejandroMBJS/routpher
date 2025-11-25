@@ -229,9 +229,11 @@ cat > composer.json <<'JSON'
     "phpunit/phpunit": "^10.0"
   },
   "autoload": {
-    "psr-4": {
-      "App\\": "app/"
-    },
+    "classmap": [
+      "app/core/",
+      "app/middleware/",
+      "app/models/"
+    ],
     "files": [
       "app/core/helpers.php"
     ]
@@ -1989,7 +1991,7 @@ fi
 if [ "$WITH_API" = true ]; then
     info "Creating API routes..."
 
-    mkdir -p app/api/users app/api/auth
+    mkdir -p app/api/users app/api/auth/refresh
 
     # API users list
     cat > app/api/users/+server.php <<'PHP'

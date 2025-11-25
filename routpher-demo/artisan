@@ -1,0 +1,109 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/app/bootstrap.php';
+
+use App\Core\DB;
+
+$command = $argv[1] ?? 'help';
+
+switch ($command) {
+    case 'migrate':
+        echo "Running migrations...\n";
+
+        $migrations = glob(__DIR__ . '/database/migrations/*.php');
+        sort($migrations);
+
+        // Get executed migrations
+        $pdo = DB::pdo();
+        $executed = [];
+
+        try {
+            $stmt = $pdo->query('SELECT migration FROM migrations');
+            $executed = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        } catch (\Exception $e) {
+            // Migrations table might not exist yet
+        }
+
+        foreach ($migrations as $file) {
+            $name = basename($file);
+
+            if (in_array($name, $executed)) {
+                echo "• Skipping $name (already executed)\n";
+                continue;
+            }
+
+            echo "→ Running $name\n";
+            require $file;
+
+            // Record migration
+            try {
+                $stmt = $pdo->prepare('INSERT INTO migrations (migration, executed_at) VALUES (?, ?)');
+                $stmt->execute([$name, time()]);
+            } catch (\Exception $e) {
+                // Ignore if migrations table doesn't exist yet
+            }
+        }
+
+        echo "\n✓ Migrations complete\n";
+        break;
+
+    case 'db:seed':
+        echo "Running seeders...\n";
+
+        $seeders = glob(__DIR__ . '/database/seeds/*.php');
+        sort($seeders);
+
+        foreach ($seeders as $file) {
+            echo "→ Running " . basename($file) . "\n";
+            require $file;
+        }
+
+        echo "\n✓ Seeding complete\n";
+        break;
+
+    case 'serve':
+        $host = $argv[2] ?? '127.0.0.1';
+        $port = $argv[3] ?? '8000';
+
+        echo "ROUTPHER development server starting on http://$host:$port\n";
+        echo "Press Ctrl+C to stop.\n\n";
+
+        passthru(PHP_BINARY . " -S $host:$port -t public");
+        break;
+
+    case 'key:generate':
+        $key = base64_encode(random_bytes(32));
+
+        $envFile = __DIR__ . '/.env';
+        $content = file_get_contents($envFile);
+        $content = preg_replace('/APP_KEY=.*/', "APP_KEY=$key", $content);
+        file_put_contents($envFile, $content);
+
+        echo "✓ Application key generated: $key\n";
+        break;
+
+    case 'routes:list':
+        echo "Route listing not yet implemented\n";
+        break;
+
+    case 'help':
+    default:
+        echo <<<HELP
+ROUTPHER Framework CLI
+
+Usage:
+  php artisan <command>
+
+Available commands:
+  migrate         Run database migrations
+  db:seed         Run database seeders
+  serve [host] [port]  Start development server (default: 127.0.0.1:8000)
+  key:generate    Generate new application key
+  routes:list     List all registered routes
+  help            Show this help message
+
+HELP;
+        break;
+}

@@ -1,0 +1,30 @@
+{
+  "name": "routpher/app",
+  "description": "ROUTPHER - Lightweight PHP framework",
+  "type": "project",
+  "require": {
+    "php": "^8.0",
+    "firebase/php-jwt": "^6.10"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.0"
+  },
+  "autoload": {
+    "classmap": [
+      "app/core/",
+      "app/middleware/",
+      "app/models/"
+    ],
+    "files": [
+      "app/core/helpers.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit"
+  }
+}

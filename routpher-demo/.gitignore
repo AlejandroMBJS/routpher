@@ -1,0 +1,13 @@
+/vendor/
+/storage/db/*.db
+/storage/logs/*.log
+/storage/cache/*
+!storage/cache/.gitkeep
+.env
+.env.local
+composer.lock
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
