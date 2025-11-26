@@ -1,29 +1,38 @@
 <?php
 
 use App\Core\Auth;
-use App\Core\Response;
 use App\Models\User;
 
 return [
     'post' => function($req) {
+        $name = $req->input('name');
         $email = $req->input('email');
         $password = $req->input('password');
 
-        $user = User::findByEmail($email);
-
-        if (!$user || !password_verify($password, $user['password'])) {
-            logger()->warning('Failed login attempt', ['email' => $email]);
-
-            $_SESSION['error'] = 'Invalid credentials';
-            redirect('/login');
+        // Check if user exists
+        if (User::findByEmail($email)) {
+            $_SESSION['error'] = 'Email already registered';
+            redirect('/register');
         }
 
-        logger()->info('User logged in', ['user_id' => $user['id']]);
+        // Validate
+        if (strlen($password) < 8) {
+            $_SESSION['error'] = 'Password must be at least 8 characters';
+            redirect('/register');
+        }
 
-        // SECURITY: Regenerate session ID to prevent session fixation
-        session_regenerate_id(true);
+        // Create user
+        $userId = User::create([
+            'email' => $email,
+            'password' => $password,
+            'name' => $name,
+            'role' => 'user'
+        ]);
 
-        $tokens = Auth::issueTokens($user['id']);
+        logger()->info('User registered', ['user_id' => $userId]);
+
+        // Auto-login
+        $tokens = Auth::issueTokens($userId);
 
         $cookieOptions = [
             'expires' => time() + (int)env('JWT_REFRESH_EXP', 604800),
@@ -38,7 +47,7 @@ return [
             'expires' => $tokens['expires'],
             'path' => '/',
             'secure' => env('SECURE_COOKIES', false),
-            'httponly' => false, // Accessible to JS for API calls
+            'httponly' => false,
             'samesite' => 'Lax'
         ]);
 
